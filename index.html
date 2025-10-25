@@ -7,7 +7,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
     <link href="style.css" rel="stylesheet">
 </head>
 <body>
@@ -18,22 +17,26 @@
                 <span>GarbaPass</span>
             </div>
             <div class="nav-links">
+                <button id="buy-tickets-nav-btn" class="nav-link">Buy Tickets</button>
+                <button id="sell-pass-nav-btn" class="btn btn-primary">Sell Tickets</button>
+
+                <div class="nav-spacer"></div>
+
                 <div id="logged-out-nav" class="nav-section">
                     <button id="login-nav-btn" class="nav-link">Login</button>
-                    <button id="signup-nav-btn" class="btn btn-primary">Sign Up</button>
+                    <button id="signup-nav-btn" class="nav-link signup">Sign Up</button>
                 </div>
                 <div id="logged-in-nav" class="nav-section hidden">
-                    <span id="user-email-nav" class="user-email"></span>
                     <button id="my-listings-nav-btn" class="nav-link">My Listings</button>
-                    <button id="logout-nav-btn" class="nav-link">Logout</button>
-                    <button id="sell-pass-nav-btn" class="btn btn-primary">Sell Your Pass</button>
+                    <span id="user-email-nav" class="user-email"></span>
+                    <button id="logout-nav-btn" class="nav-link logout">(Logout)</button>
                 </div>
             </div>
         </div>
     </nav>
 
     <div class="main-container">
-        <div class="filter-bar">
+        <div id="filter-section" class="filter-bar">
             <div class="filter-grid">
                 <div class="filter-item filter-search">
                     <label for="search-input" class="form-label">Search Event Name</label>
@@ -212,20 +215,20 @@
         <div class="modal-content">
             <span class="modal-close" data-modal-id="my-listings-modal">&times;</span>
             <h3>My Listings</h3>
-            <div id="my-listings-content" class="my-listings-container">
-                </div>
+            <div id="my-listings-content" class="my-listings-container"></div>
         </div>
     </div>
 
     <div id="details-modal" class="modal">
         <div class="modal-content">
             <span class="modal-close" data-modal-id="details-modal">&times;</span>
-            <div id="details-content" class="details-container">
-                </div>
+            <div id="details-content" class="details-container"></div>
         </div>
     </div>
     
-    <div id="payment-modal" class="modal payment-modal"> <div class="modal-content payment-content"> <div id="payment-loader" class="payment-loader">
+    <div id="payment-modal" class="modal payment-modal">
+        <div class="modal-content payment-content">
+            <div id="payment-loader" class="payment-loader">
                 <svg class="spinner" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                     <circle class="spinner-circle" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                     <path class="spinner-path" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
@@ -236,7 +239,8 @@
     </div>
     
     <div id="contact-modal" class="modal">
-        <div class="modal-content contact-content"> <span class="modal-close" data-modal-id="contact-modal">&times;</span>
+        <div class="modal-content contact-content">
+            <span class="modal-close" data-modal-id="contact-modal">&times;</span>
             <h3>Payment Successful!</h3>
             <p>Here is the seller's contact information:</p>
             <p id="contact-phone" class="contact-phone-number"></p>

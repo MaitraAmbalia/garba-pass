@@ -1,11 +1,5 @@
 // --- DATA STRUCTURES ---
 
-/**
- * Trie (Prefix Tree)
- * Used for client-side autocomplete on the search bar.
- * this.root.children is a Hash Map { 'a': TrieNode, 'b': TrieNode, ... }
- * node.listings is a Set to store unique listing IDs.
- */
 class TrieNode {
     constructor() {
         this.children = {}; // Hash Map for children
@@ -357,14 +351,12 @@ if (sellForm) {
     sellForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         
-        // --- THIS IS THE FIX ---
         if (!authToken) {
             alert("Please login before creating a listing.");
             hideModal(sellModal);
             showModal(loginModal);
             return;
         }
-        // --- END OF FIX ---
 
         const isBoosted = $('#sell-boost')?.checked || false;
         const cost = isBoosted ? 35 : 25;
@@ -445,23 +437,39 @@ const loginNavBtn = $('#login-nav-btn');
 const signupNavBtn = $('#signup-nav-btn');
 const sellPassNavBtn = $('#sell-pass-nav-btn');
 const logoutNavBtn = $('#logout-nav-btn');
-if (loginNavBtn) loginNavBtn.addEventListener('click', () => showModal(loginModal));
-if (signupNavBtn) signupNavBtn.addEventListener('click', () => showModal(signupModal));
-if (sellPassNavBtn) sellPassNavBtn.addEventListener('click', () => {
-    // Also check for login here for a better user experience
-    if (!authToken) {
-        alert("Please login to sell a pass.");
-        showModal(loginModal);
-    } else {
-        showModal(sellModal);
-    }
-});
-if (logoutNavBtn) logoutNavBtn.addEventListener('click', () => {
+const buyTicketsNavBtn = $('#buy-tickets-nav-btn');
+
+if(loginNavBtn) loginNavBtn.addEventListener('click', () => showModal(loginModal));
+if(signupNavBtn) signupNavBtn.addEventListener('click', () => showModal(signupModal));
+if(logoutNavBtn) logoutNavBtn.addEventListener('click', () => {
     authToken = null;
     localStorage.removeItem('token');
     localStorage.removeItem('user');
     updateNavUI();
 });
+
+// ** NEW LOGIC FOR SELL BUTTON **
+if (sellPassNavBtn) {
+    sellPassNavBtn.addEventListener('click', () => {
+        if (!authToken) {
+            alert("Please login or sign up to sell a pass.");
+            showModal(loginModal);
+        } else {
+            showModal(sellModal);
+        }
+    });
+}
+
+// ** NEW LOGIC FOR BUY BUTTON **
+if (buyTicketsNavBtn) {
+    buyTicketsNavBtn.addEventListener('click', () => {
+        const filterSection = $('#filter-section');
+        if (filterSection) {
+            filterSection.scrollIntoView({ behavior: 'smooth' });
+        }
+    });
+}
+
 
 // --- INITIALIZATION ---
 document.addEventListener('DOMContentLoaded', () => {
