@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Navaratri Pass Exchange</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link href="style.css" rel="stylesheet">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <span>GarbaPass</span>
+            </div>
+            <div class="nav-links">
+                <div id="logged-out-nav" class="nav-section">
+                    <button id="login-nav-btn" class="nav-link">Login</button>
+                    <button id="signup-nav-btn" class="btn btn-primary">Sign Up</button>
+                </div>
+                <div id="logged-in-nav" class="nav-section hidden">
+                    <span id="user-email-nav" class="user-email"></span>
+                    <button id="my-listings-nav-btn" class="nav-link">My Listings</button>
+                    <button id="logout-nav-btn" class="nav-link">Logout</button>
+                    <button id="sell-pass-nav-btn" class="btn btn-primary">Sell Your Pass</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="main-container">
+        <div class="filter-bar">
+            <div class="filter-grid">
+                <div class="filter-item filter-search">
+                    <label for="search-input" class="form-label">Search Event Name</label>
+                    <input type="text" id="search-input" class="form-input" placeholder="e.g., United Way of Baroda">
+                    <div id="autocomplete-container" class="autocomplete-results hidden"></div>
+                </div>
+                <div class="filter-item">
+                    <label for="filter-city" class="form-label">City</label>
+                    <select id="filter-city" class="form-input">
+                        <option value="">All Cities</option>
+                        <option value="Vadodara">Vadodara</option>
+                        <option value="Ahmedabad">Ahmedabad</option>
+                        <option value="Surat">Surat</option>
+                        <option value="Mumbai">Mumbai</option>
+                        <option value="Rajkot">Rajkot</option>
+                    </select>
+                </div>
+                <div class="filter-item">
+                    <label for="filter-pass-type" class="form-label">Pass Type</label>
+                    <select id="filter-pass-type" class="form-input">
+                        <option value="">All Types</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Couple">Couple</option>
+                        <option value="Group">Group</option>
+                        <option value="VIP">VIP</option>
+                    </select>
+                </div>
+                <div class="filter-item">
+                    <label for="filter-date" class="form-label">Date</label>
+                    <select id="filter-date" class="form-input">
+                        <option value="">All Dates</option>
+                        <option value="Day 1">Day 1</option>
+                        <option value="Day 2">Day 2</option>
+                        <option value="Day 3">Day 3</option>
+                        <option value="Day 4">Day 4</option>
+                        <option value="Day 5">Day 5</option>
+                        <option value="Day 6">Day 6</option>
+                        <option value="Day 7">Day 7</option>
+                        <option value="Day 8">Day 8</option>
+                        <option value="Day 9">Day 9</option>
+                        <option value="Full Season">Full Season</option>
+                    </select>
+                </div>
+            </div>
+            <div class="filter-actions">
+                <button id="filter-btn" class="btn btn-primary">Apply Filters</button>
+                <button id="clear-filter-btn" class="btn btn-secondary">Clear</button>
+            </div>
+        </div>
+
+        <div id="listings-container" class="listings-grid">
+            </div>
+        <div id="no-listings" class="no-listings-message hidden">
+            <h3>No Passes Found</h3>
+            <p>Try adjusting your filters or check back later!</p>
+        </div>
+    </div>
+
+    <div id="login-modal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close" data-modal-id="login-modal">&times;</span>
+            <h3>Login to Your Account</h3>
+            <form id="login-form" class="modal-form">
+                <div>
+                    <label for="login-email" class="form-label">Email</label>
+                    <input type="email" id="login-email" class="form-input" required>
+                </div>
+                <div>
+                    <label for="login-password" class="form-label">Password</label>
+                    <input type="password" id="login-password" class="form-input" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Login</button>
+                <div id="login-error" class="error-message"></div>
+            </form>
+        </div>
+    </div>
+
+    <div id="signup-modal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close" data-modal-id="signup-modal">&times;</span>
+            <h3>Create an Account</h3>
+            <form id="signup-form" class="modal-form">
+                <div>
+                    <label for="signup-email" class="form-label">Email</label>
+                    <input type="email" id="signup-email" class="form-input" required>
+                </div>
+                <div>
+                    <label for="signup-phone" class="form-label">Phone Number</label>
+                    <input type="tel" id="signup-phone" class="form-input" required>
+                </div>
+                <div>
+                    <label for="signup-password" class="form-label">Password</label>
+                    <input type="password" id="signup-password" class="form-input" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Sign Up</button>
+                <div id="signup-error" class="error-message"></div>
+            </form>
+        </div>
+    </div>
+
+    <div id="sell-modal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close" data-modal-id="sell-modal">&times;</span>
+            <h3>Sell Your Pass</h3>
+            <form id="sell-form" class="modal-form">
+                <div>
+                    <label for="sell-event-name" class="form-label">Event Name</label>
+                    <input type="text" id="sell-event-name" class="form-input" required placeholder="e.g., United Way of Baroda">
+                </div>
+                <div class="form-grid-2">
+                    <div>
+                        <label for="sell-city" class="form-label">City</label>
+                        <select id="sell-city" class="form-input" required>
+                            <option value="Vadodara">Vadodara</option>
+                            <option value="Ahmedabad">Ahmedabad</option>
+                            <option value="Surat">Surat</option>
+                            <option value="Mumbai">Mumbai</option>
+                            <option value="Rajkot">Rajkot</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="sell-pass-type" class="form-label">Pass Type</label>
+                        <select id="sell-pass-type" class="form-input" required>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Couple">Couple</option>
+                            <option value="Group">Group</option>
+                            <option value="VIP">VIP</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-grid-2">
+                    <div>
+                        <label for="sell-date" class="form-label">Date(s)</label>
+                        <select id="sell-date" class="form-input" required>
+                            <option value="Day 1">Day 1</option>
+                            <option value="Day 2">Day 2</option>
+                            <option value="Day 3">Day 3</option>
+                            <option value="Day 4">Day 4</option>
+                            <option value="Day 5">Day 5</option>
+                            <option value="Day 6">Day 6</option>
+                            <option value="Day 7">Day 7</option>
+                            <option value="Day 8">Day 8</option>
+                            <option value="Day 9">Day 9</option>
+                            <option value="Full Season">Full Season</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="sell-price" class="form-label">Selling Price (INR)</label>
+                        <input type="number" id="sell-price" class="form-input" required placeholder="e.g., 1500">
+                    </div>
+                </div>
+                <div>
+                    <label for="sell-phone" class="form-label">Your Phone Number (for buyers)</label>
+                    <input type="tel" id="sell-phone" class="form-input" required placeholder="e.g., +919876543210">
+                </div>
+                <div>
+                    <label for="sell-description" class="form-label">Description</label>
+                    <textarea id="sell-description" rows="2" class="form-input" placeholder="Any extra details..."></textarea>
+                </div>
+                <div class="form-checkbox">
+                    <input id="sell-boost" type="checkbox">
+                    <label for="sell-boost">
+                        Boost this listing for a (fake) $10 extra (Show at top of results)
+                    </label>
+                </div>
+                
+                <button type="submit" id="sell-submit-btn" class="btn btn-primary">Pay (Fake) $25 to List</button>
+                <div id="sell-error" class="error-message"></div>
+            </form>
+        </div>
+    </div>
+
+    <div id="my-listings-modal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close" data-modal-id="my-listings-modal">&times;</span>
+            <h3>My Listings</h3>
+            <div id="my-listings-content" class="my-listings-container">
+                </div>
+        </div>
+    </div>
+
+    <div id="details-modal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close" data-modal-id="details-modal">&times;</span>
+            <div id="details-content" class="details-container">
+                </div>
+        </div>
+    </div>
+    
+    <div id="payment-modal" class="modal payment-modal"> <div class="modal-content payment-content"> <div id="payment-loader" class="payment-loader">
+                <svg class="spinner" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="spinner-circle" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="spinner-path" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+            </div>
+            <p id="payment-message" class="payment-message">Processing your (fake) payment...</p>
+        </div>
+    </div>
+    
+    <div id="contact-modal" class="modal">
+        <div class="modal-content contact-content"> <span class="modal-close" data-modal-id="contact-modal">&times;</span>
+            <h3>Payment Successful!</h3>
+            <p>Here is the seller's contact information:</p>
+            <p id="contact-phone" class="contact-phone-number"></p>
+            <div class="safety-warning">
+                <div class="safety-warning-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.332-.266 2.98-1.742 2.98H4.42c-1.476 0-2.492-1.648-1.742-2.98l5.58-9.92zM10 13a1 1 0 110-2 1 1 0 010 2zm-1-8a1 1 0 011-1h.008a1 1 0 110 2H10a1 1 0 01-1-1z" clip-rule="evenodd" />
+                    </svg>
+                </div>
+                <div class="safety-warning-text">
+                    <p>
+                        **Safety Warning:** All transactions are peer-to-peer. Please meet in a public place, verify the pass, and **never pay before you have the pass**. We are not responsible for any fraud.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js" defer></script> 
+</body>
+</html>
