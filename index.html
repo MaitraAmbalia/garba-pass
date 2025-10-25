@@ -6,7 +6,7 @@
     <title>Navaratri Pass Exchange</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="style.css" rel="stylesheet">
 </head>
 <body>
@@ -34,6 +34,17 @@
             </div>
         </div>
     </nav>
+
+    <header class="hero-section">
+        <div class="hero-content">
+            <h1 class="hero-title">The Trusted Marketplace for Navaratri Passes</h1>
+            <p class="hero-subtitle">Don't let your extra passes go to waste. Find verified buyers and sellers for the best Garba events in town.</p>
+            <div class="hero-actions">
+                <button id="hero-find-btn" class="btn btn-hero-primary">Find Passes</button>
+                <button id="hero-sell-btn" class="btn btn-hero-secondary">Sell Passes</button>
+            </div>
+        </div>
+    </header>
 
     <div class="main-container">
         <div id="filter-section" class="filter-bar">
@@ -88,8 +99,7 @@
             </div>
         </div>
 
-        <div id="listings-container" class="listings-grid">
-            </div>
+        <div id="listings-container" class="listings-grid"></div>
         <div id="no-listings" class="no-listings-message hidden">
             <h3>No Passes Found</h3>
             <p>Try adjusting your filters or check back later!</p>
@@ -204,7 +214,6 @@
                         Boost this listing for a (fake) $10 extra (Show at top of results)
                     </label>
                 </div>
-                
                 <button type="submit" id="sell-submit-btn" class="btn btn-primary">Pay (Fake) $25 to List</button>
                 <div id="sell-error" class="error-message"></div>
             </form>

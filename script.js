@@ -77,6 +77,8 @@ const searchInput = $('#search-input');
 const autocompleteContainer = $('#autocomplete-container');
 const filterBtn = $('#filter-btn');
 const clearFilterBtn = $('#clear-filter-btn');
+const heroFindBtn = $('#hero-find-btn');
+const heroSellBtn = $('#hero-sell-btn');
 
 // --- MODAL HELPERS ---
 function showModal(modal) {
@@ -350,14 +352,12 @@ if (signupForm) {
 if (sellForm) {
     sellForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-        
         if (!authToken) {
             alert("Please login before creating a listing.");
             hideModal(sellModal);
             showModal(loginModal);
             return;
         }
-
         const isBoosted = $('#sell-boost')?.checked || false;
         const cost = isBoosted ? 35 : 25;
         const errorDiv = $('#sell-error');
@@ -432,44 +432,43 @@ if (myListingsBtn) {
     });
 }
 
-// --- NAV BUTTONS ---
+// --- NAV & HERO BUTTONS ---
 const loginNavBtn = $('#login-nav-btn');
 const signupNavBtn = $('#signup-nav-btn');
 const sellPassNavBtn = $('#sell-pass-nav-btn');
 const logoutNavBtn = $('#logout-nav-btn');
 const buyTicketsNavBtn = $('#buy-tickets-nav-btn');
 
-if(loginNavBtn) loginNavBtn.addEventListener('click', () => showModal(loginModal));
-if(signupNavBtn) signupNavBtn.addEventListener('click', () => showModal(signupModal));
-if(logoutNavBtn) logoutNavBtn.addEventListener('click', () => {
+if (loginNavBtn) loginNavBtn.addEventListener('click', () => showModal(loginModal));
+if (signupNavBtn) signupNavBtn.addEventListener('click', () => showModal(signupModal));
+if (logoutNavBtn) logoutNavBtn.addEventListener('click', () => {
     authToken = null;
     localStorage.removeItem('token');
     localStorage.removeItem('user');
     updateNavUI();
 });
 
-// ** NEW LOGIC FOR SELL BUTTON **
-if (sellPassNavBtn) {
-    sellPassNavBtn.addEventListener('click', () => {
-        if (!authToken) {
-            alert("Please login or sign up to sell a pass.");
-            showModal(loginModal);
-        } else {
-            showModal(sellModal);
-        }
-    });
+function handleSellClick() {
+    if (!authToken) {
+        alert("Please login or sign up to sell a pass.");
+        showModal(loginModal);
+    } else {
+        showModal(sellModal);
+    }
 }
 
-// ** NEW LOGIC FOR BUY BUTTON **
-if (buyTicketsNavBtn) {
-    buyTicketsNavBtn.addEventListener('click', () => {
-        const filterSection = $('#filter-section');
-        if (filterSection) {
-            filterSection.scrollIntoView({ behavior: 'smooth' });
-        }
-    });
+if (sellPassNavBtn) sellPassNavBtn.addEventListener('click', handleSellClick);
+if (heroSellBtn) heroSellBtn.addEventListener('click', handleSellClick);
+
+function handleBuyClick() {
+    const filterSection = $('#filter-section');
+    if (filterSection) {
+        filterSection.scrollIntoView({ behavior: 'smooth' });
+    }
 }
 
+if (buyTicketsNavBtn) buyTicketsNavBtn.addEventListener('click', handleBuyClick);
+if (heroFindBtn) heroFindBtn.addEventListener('click', handleBuyClick);
 
 // --- INITIALIZATION ---
 document.addEventListener('DOMContentLoaded', () => {
