@@ -397,40 +397,99 @@ if (sellForm) {
     });
 }
 
+// ... (All other code remains the same up to this point) ...
+
+// Handle "My Listings" Button
 const myListingsBtn = $('#my-listings-nav-btn');
 if (myListingsBtn) {
     myListingsBtn.addEventListener('click', async () => {
         if (!authToken) return;
+        
         const contentDiv = $('#my-listings-content');
         if (!contentDiv) return;
-        contentDiv.innerHTML = '<p>Loading...</p>';
-        showModal(myListingsModal);
-        try {
-            const res = await fetch(`${API_URL}/listings/my-listings`, {
-                headers: { 'Authorization': `Bearer ${authToken}` }
-            });
-            if (!res.ok) throw new Error(`Could not fetch listings: ${res.statusText}`);
-            const myListings = await res.json();
-            if (!myListings || myListings.length === 0) {
-                contentDiv.innerHTML = '<p>You have not created any listings.</p>';
-                return;
+
+        // Function to fetch and render user's listings
+        async function refreshMyListings() {
+            contentDiv.innerHTML = '<p>Loading...</p>';
+            try {
+                const res = await fetch(`${API_URL}/listings/my-listings`, {
+                    headers: { 'Authorization': `Bearer ${authToken}` }
+                });
+                if (!res.ok) throw new Error(`Could not fetch listings: ${res.statusText}`);
+                
+                const myListings = await res.json();
+                
+                if (!myListings || myListings.length === 0) {
+                    contentDiv.innerHTML = '<p>You have not created any listings.</p>';
+                    return;
+                }
+                
+                contentDiv.innerHTML = ''; // Clear loading
+                myListings.forEach(l => {
+                    const listingDiv = document.createElement('div');
+                    listingDiv.className = `my-listing-item ${l.status === 'sold' ? 'sold' : ''}`;
+                    
+                    // Conditionally add the "Mark as Sold" button
+                    let actionButtonHTML = '';
+                    if (l.status === 'available') {
+                        actionButtonHTML = `<button class="btn-mark-sold" data-id="${l._id}">Mark as Sold</button>`;
+                    }
+
+                    listingDiv.innerHTML = `
+                        <div>
+                            <h4>${l.eventName || 'N/A'}</h4>
+                            <p>Price: ₹${l.price || 0} | Status: <span class="status ${l.status === 'sold' ? 'status-sold' : 'status-available'}">${l.status || 'N/A'}</span></p>
+                            <p class="details">${l.city || 'N/A'} | ${l.passType || 'N/A'}</p>
+                            ${l.priority > 1 ? '<p class="boosted-tag">Boosted</p>' : ''}
+                        </div>
+                        ${actionButtonHTML}
+                    `;
+                    contentDiv.appendChild(listingDiv);
+                });
+            } catch(err) {
+                console.error("My Listings Error:", err);
+                contentDiv.innerHTML = `<p class="error-message">${err.message}</p>`;
             }
-            contentDiv.innerHTML = '';
-            myListings.forEach(l => {
-                const listingDiv = document.createElement('div');
-                listingDiv.className = `my-listing-item ${l.status === 'sold' ? 'sold' : ''}`;
-                listingDiv.innerHTML = `
-                    <h4>${l.eventName || 'N/A'}</h4>
-                    <p>Price: ₹${l.price || 0} | Status: <span class="status ${l.status === 'sold' ? 'status-sold' : 'status-available'}">${l.status || 'N/A'}</span></p>
-                    <p class="details">${l.city || 'N/A'} | ${l.passType || 'N/A'}</p>
-                    ${l.priority > 1 ? '<p class="boosted-tag">Boosted</p>' : ''}`;
-                contentDiv.appendChild(listingDiv);
-            });
-        } catch (err) {
-            contentDiv.innerHTML = `<p class="error-message">${err.message}</p>`;
         }
+        
+        showModal(myListingsModal);
+        await refreshMyListings(); // Initial fetch
+
+        // NEW Event listener for the "Mark as Sold" buttons inside the modal
+        contentDiv.addEventListener('click', async (e) => {
+            if (e.target && e.target.classList.contains('btn-mark-sold')) {
+                const listingId = e.target.getAttribute('data-id');
+                if (!listingId) return;
+
+                const confirmed = confirm("Are you sure you want to mark this pass as sold? This action cannot be undone.");
+                if (!confirmed) return;
+
+                try {
+                    const res = await fetch(`${API_URL}/listings/${listingId}/sold`, {
+                        method: 'PUT',
+                        headers: {
+                            'Authorization': `Bearer ${authToken}`
+                        }
+                    });
+
+                    if (!res.ok) {
+                        const errData = await res.json();
+                        throw new Error(errData.message || "Failed to update listing.");
+                    }
+
+                    alert("Listing marked as sold!");
+                    await refreshMyListings(); // Refresh the list to show the change
+                    await fetchAllListings(); // Also refresh the main homepage listings
+
+                } catch (err) {
+                    console.error("Mark as Sold Error:", err);
+                    alert(`Error: ${err.message}`);
+                }
+            }
+        });
     });
 }
+
 
 // --- NAV & HERO BUTTONS ---
 const loginNavBtn = $('#login-nav-btn');

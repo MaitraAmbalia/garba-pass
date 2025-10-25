@@ -355,6 +355,36 @@ app.get('/api/listings/my-listings', authMiddleware, async (req, res) => {
     }
 });
 
+app.put('/api/listings/:id/sold', authMiddleware, async (req, res) => {
+    try {
+        const listing = await Listing.findById(req.params.id);
+
+        // Check 1: Does the listing exist?
+        if (!listing) {
+            return res.status(404).json({ message: "Listing not found." });
+        }
+
+        // Check 2: Does the logged-in user own this listing? (Authorization)
+        if (listing.sellerId.toString() !== req.user.id) {
+            return res.status(403).json({ message: "User not authorized to modify this listing." });
+        }
+        
+        // Check 3: Is the listing already sold?
+        if (listing.status === 'sold') {
+            return res.status(400).json({ message: "Listing is already marked as sold." });
+        }
+
+        // Update the status and save
+        listing.status = 'sold';
+        await listing.save();
+
+        res.status(200).json(listing); // Return the updated listing
+    } catch (err) {
+        console.error("Mark as Sold Error:", err);
+        res.status(500).json({ message: "Server Error" });
+    }
+});
+
 // GET /api/listings/:id/contact (Get Seller Info)
 // This simulates the buyer's $10 payment.
 app.get('/api/listings/:id/contact', authMiddleware, async (req, res) => {

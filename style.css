@@ -565,3 +565,63 @@ textarea.form-input {
     color: #854d0e;
     margin: 0;
 }
+
+.my-listings-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    max-height: 60vh;
+    overflow-y: auto;
+}
+.my-listing-item {
+    border: 1px solid #e5e7eb;
+    border-radius: 0.375rem;
+    padding: 0.75rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+}
+.my-listing-item.sold {
+    background-color: #f3f4f6;
+    opacity: 0.7; /* Make it look faded */
+}
+.my-listing-item.sold h4 {
+    text-decoration: line-through; /* Strikethrough sold items */
+}
+.my-listing-item .status {
+    font-weight: 500;
+}
+.my-listing-item .status-sold {
+    color: #dc2626;
+}
+.my-listing-item .status-available {
+    color: #16a34a;
+}
+.my-listing-item .details {
+    font-size: 0.875rem;
+    color: #6b7280;
+}
+.my-listing-item .boosted-tag {
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: #ca8a04;
+}
+
+/* NEW button style */
+.btn-mark-sold {
+    background-color: #fef2f2;
+    color: #b91c1c;
+    border: 1px solid #fecaca;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    border-radius: 9999px;
+    cursor: pointer;
+    flex-shrink: 0; /* Prevent the button from shrinking */
+    transition: all 0.2s ease;
+}
+.btn-mark-sold:hover {
+    background-color: #fee2e2;
+    color: #991b1b;
+}
